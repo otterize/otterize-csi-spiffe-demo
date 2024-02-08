@@ -1,0 +1,16 @@
+app:
+  trustDomain: cert-manager-spiffe.mattiasgees.be
+  issuer:
+    name: cert-manager-spiffe
+  approver:
+    signerName: clusterissuers.cert-manager.io/cert-manager-spiffe
+    metrics:
+      service:
+        servicemonitor:
+          enabled: true
+
+image:
+  tag: aws
+  repository:
+    driver: ghcr.io/joshvanl/cert-manager-csi-driver
+    approver: ghcr.io/joshvanl/cert-manager-csi-driver-approver

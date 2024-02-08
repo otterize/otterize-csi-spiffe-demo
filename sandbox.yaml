@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sandbox
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: example-app
+  namespace: sandbox
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: example-app
+  namespace: sandbox
+rules:
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificaterequests"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: example-app
+  namespace: sandbox
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: example-app
+subjects:
+- kind: ServiceAccount
+  name: example-app
+  namespace: sandbox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-csi-app
+  namespace: sandbox
+  labels:
+    app: my-csi-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-csi-app
+  template:
+    metadata:
+      labels:
+        app: my-csi-app
+    spec:
+      serviceAccountName: example-app
+      containers:
+        - name: example-app
+          image: mattiasgees/spire-tools:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: "/root/.aws"
+            name: spiffe
+      volumes:
+        - name: spiffe
+          csi:
+            driver: spiffe.csi.cert-manager.io
+            readOnly: true
+            volumeAttributes:
+              aws.spiffe.csi.cert-manager.io/trust-profile: "arn:aws:rolesanywhere:eu-west-2:228615251467:profile/a37adb60-1972-4450-ae56-fba0947503f1"
+              aws.spiffe.csi.cert-manager.io/trust-anchor: "arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/783a334a-9244-4279-9fb3-cea38c65ce3f"
+              aws.spiffe.csi.cert-manager.io/role: "arn:aws:iam::228615251467:role/otterize-role"
+              aws.spiffe.csi.cert-manager.io/enable: "true"
