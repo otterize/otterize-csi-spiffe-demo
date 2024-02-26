@@ -58,13 +58,13 @@
         --set credentialsOperator.aws.roleARN=<AWS ARN for credential operator role>
     ```
 
-1. Run these commands to update resources necessary for the operator to function (will be part of the Helm chart):
+1. Run these commands to update resources necessary for the operator to function (will be part of the Helm chart)
 
     ```bash
     kubectl label mutatingwebhookconfiguration/otterize-credentials-operator-mutating-webhook-configuration app.kubernetes.io/component=credentials-operator app.kubernetes.io/part-of=otterize
     ```
 
-1. Give Otterize serviceaccounts the permission to create certificaterequests
+1. Give Otterize Kubernetes Service Accounts the permission to create cert-manager certificaterequests
 
     ```bash
     kubectl apply -f rbac.yaml
