@@ -4,10 +4,6 @@ app:
     name: cert-manager-spiffe
   approver:
     signerName: clusterissuers.cert-manager.io/cert-manager-spiffe
-    metrics:
-      service:
-        servicemonitor:
-          enabled: true
 
 image:
   tag: aws
