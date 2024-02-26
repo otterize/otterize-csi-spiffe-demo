@@ -76,6 +76,14 @@
     kubectl apply -f rbac.yaml
     ```
 
+1. Patch the CSI Driver SPIFFE in the intents-controller and the credentials-controller (make sure to change the arns)
+
+    ```bash
+    kubectl patch deployment credentials-operator-controller-manager -n otterize-system -p '{"spec":{"template":{"spec":{"volumes":[{"name":"spiffe","csi":{"driver":"spiffe.csi.cert-manager.io","readOnly":true,"volumeAttributes":{"aws.spiffe.csi.cert-manager.io/trust-profile":"arn:aws:rolesanywhere:eu-west-2:228615251467:profile/08934a72-b008-4632-86ca-46ea38690c5a","aws.spiffe.csi.cert-manager.io/trust-anchor":"arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/539adc52-d077-41e7-b73b-1b21254b8f48","aws.spiffe.csi.cert-manager.io/role":"arn:aws:iam::228615251467:role/otterize-credentials-operator","aws.spiffe.csi.cert-manager.io/enable":"true"}}}]},"containers":[{"name":"manager","volumeMounts":[{"name":"spiffe","mountPath":"/root/.aws"}]}]}}}'
+
+    kubectl patch deployment intents-operator-controller-manager -n otterize-system -p '{"spec":{"template":{"spec":{"volumes":[{"name":"spiffe","csi":{"driver":"spiffe.csi.cert-manager.io","readOnly":true,"volumeAttributes":{"aws.spiffe.csi.cert-manager.io/trust-profile":"arn:aws:rolesanywhere:eu-west-2:228615251467:profile/4561d1dc-5326-4eb8-918b-8173a88ceb61","aws.spiffe.csi.cert-manager.io/trust-anchor":"arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/539adc52-d077-41e7-b73b-1b21254b8f48","aws.spiffe.csi.cert-manager.io/role":"arn:aws:iam::228615251467:role/otterize-intents-operator","aws.spiffe.csi.cert-manager.io/enable":"true"}}}]},"containers":[{"name":"manager","volumeMounts":[{"name":"spiffe","mountPath":"/root/.aws"}]}]}}}'
+    ```
+
 ## Setup instructions for cert-managaer CSI Driver SPIFFE only
 
 1. Setup cert-manager

@@ -1,5 +1,9 @@
-output "trust-profile-arn" {
+output "otterize-credentials-operator-trust-profile-arn" {
   value = aws_rolesanywhere_profile.otterize-credentials-operator.arn
+}
+
+output "otterize-intents-operator-trust-profile-arn" {
+  value = aws_rolesanywhere_profile.otterize-intents-operator.arn
 }
 
 output "trust-anchor-arn" {
