@@ -1,0 +1,18 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: manager
+        volumeMounts:
+        - mountPath: "/root/.aws"
+          name: spiffe
+      volumes:
+      - name: spiffe
+        csi:
+          driver: spiffe.csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            aws.spiffe.csi.cert-manager.io/trust-profile: "arn:aws:rolesanywhere:eu-west-2:228615251467:profile/4561d1dc-5326-4eb8-918b-8173a88ceb61"
+            aws.spiffe.csi.cert-manager.io/trust-anchor: "arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/539adc52-d077-41e7-b73b-1b21254b8f48"
+            aws.spiffe.csi.cert-manager.io/role: "arn:aws:iam::228615251467:role/otterize-intents-operator"
+            aws.spiffe.csi.cert-manager.io/enable: "true"
