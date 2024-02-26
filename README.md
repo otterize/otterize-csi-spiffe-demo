@@ -70,6 +70,12 @@
     kubectl patch deployment credentials-operator-controller-manager -n otterize-system -p '{"spec":{"template":{"spec":{"containers":[{"name":"manager","env":[{"name":"OTTERIZE_TRUST_ANCHOR_ARN","value":"<arn of Trust Anchor>"}]}]}}}}'
     ```
 
+1. Give Otterize serviceaccounts the permission to create certificaterequests
+
+    ```bash
+    kubectl apply -f rbac.yaml
+    ```
+
 ## Setup instructions for cert-managaer CSI Driver SPIFFE only
 
 1. Setup cert-manager
