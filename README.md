@@ -58,6 +58,18 @@
         --set credentialsOperator.aws.roleARN=<AWS ARN for credential operator role>
     ```
 
+1. Run these commands to update resources necessary for the operator to function (will be part of the Helm chart):
+
+    ```bash
+    kubectl label mutatingwebhookconfiguration/otterize-credentials-operator-mutating-webhook-configuration app.kubernetes.io/component=credentials-operator app.kubernetes.io/part-of=otterize
+    ```
+
+1. Add environment variable to set the trust anchor on the credentials operator:
+
+    ```bash
+    kubectl patch deployment credentials-operator-controller-manager -n otterize-system -p '{"spec":{"template":{"spec":{"containers":[{"name":"manager","env":[{"name":"OTTERIZE_TRUST_ANCHOR_ARN","value":"<arn of Trust Anchor>"}]}]}}}}'
+    ```
+
 ## Setup instructions for cert-managaer CSI Driver SPIFFE only
 
 1. Setup cert-manager
