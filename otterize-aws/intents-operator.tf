@@ -1,5 +1,5 @@
-resource "aws_iam_role" "otterize-credentials-operator" {
-  name = var.otterize-credentials-operator-role-name
+resource "aws_iam_role" "otterize-intents-operator" {
+  name = var.otterize-intents-operator-role-name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -12,7 +12,7 @@ resource "aws_iam_role" "otterize-credentials-operator" {
         },
         Condition = {
           StringLike = {
-            "aws:PrincipalTag/x509SAN/URI" = "spiffe://${var.trust-domain}/ns/${var.otterize-namespace}/sa/${var.otterize-credentials-operator-serviceaccount}",
+            "aws:PrincipalTag/x509SAN/URI" = "spiffe://${var.trust-domain}/ns/${var.otterize-namespace}/sa/${var.otterize-intents-operator-serviceaccount}",
           }
           ArnEquals = {
             "aws:SourceArn" = aws_rolesanywhere_trust_anchor.otterize-cert-manager-spiffe-ca.arn
@@ -23,9 +23,9 @@ resource "aws_iam_role" "otterize-credentials-operator" {
   })
 }
 
-resource "aws_iam_role_policy" "otterize-credentials-operator" {
-  name = var.otterize-credentials-operator-policy-name
-  role = aws_iam_role.otterize-credentials-operator.name
+resource "aws_iam_role_policy" "otterize-intents-operator" {
+  name = var.otterize-intents-operator-policy-name
+  role = aws_iam_role.otterize-intents-operator.name
 
   policy = <<EOF
 {
@@ -49,32 +49,15 @@ resource "aws_iam_role_policy" "otterize-credentials-operator" {
       ],
       "Resource": "*",
       "Effect": "Allow"
-    },
-    {
-      "Action": [
-        "rolesanywhere:CreateProfile",
-        "rolesanywhere:DeleteProfile",
-        "rolesanywhere:GetProfile",
-        "rolesanywhere:ListProfiles"
-      ],
-      "Resource": "*",
-      "Effect": "Allow"
-    },
-    {
-      "Action": [
-        "iam:PassRole"
-      ],
-      "Resource": "*",
-      "Effect": "Allow"
     }
   ]
 }
 EOF
 }
 
-resource "aws_rolesanywhere_profile" "otterize-credentials-operator" {
+resource "aws_rolesanywhere_profile" "otterize-intents-operator" {
 
-  name           = var.otterize-credentials-operator-profile-name
+  name           = var.otterize-intents-operator-profile-name
   enabled        = true
-  role_arns      = [aws_iam_role.otterize-credentials-operator.arn]
+  role_arns      = [aws_iam_role.otterize-intents-operator.arn]
 }
