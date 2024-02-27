@@ -5,6 +5,7 @@
 * Kubernetes
 * Helm
 * [cmctl](https://cert-manager.io/docs/reference/cmctl/)
+* AWS CLI
 
 ## Setup instructions for cert-manager CSI Driver SPIFFE with Otterize
 
@@ -75,6 +76,29 @@
     ```bash
     kubectl patch deployment credentials-operator-controller-manager -n otterize-system --patch-file credentials-operator-patch.yaml
     kubectl patch deployment intents-operator-controller-manager -n otterize-system --patch-file intents-operator-patch.yaml
+    ```
+
+1. Create S3 bucket and deploy demo application
+
+    ```bash
+    export BUCKET_NAME=otterize-tutorial-bucket-`date +%s`
+    echo $BUCKET_NAME
+    aws s3api create-bucket --bucket $BUCKET_NAME --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2
+    kubectl create namespace otterize-tutorial-iam
+    kubectl apply -n otterize-tutorial-iam -f https://docs.otterize.com/code-examples/aws-iam-eks/client-and-server.yaml
+    kubectl patch deployment -n otterize-tutorial-iam server --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/template/spec/containers/0/env\", \"value\": [{\"name\": \"BUCKET_NAME\", \"value\": \"$BUCKET_NAME\"}]}]"
+    ```
+
+1. Watch logs of the server and look at credentials errors
+
+    ```bash
+    kubectl logs -f -n otterize-tutorial-iam deploy/server
+    ```
+
+1. Add the label to let Otterize create the role
+
+    ```bash
+    kubectl patch deployment -n otterize-tutorial-iam server -p '{"spec": {"template":{"metadata":{"labels":{"credentials-operator.otterize.com/create-aws-role":"true"}}}} }'
     ```
 
 ## Setup instructions for cert-manager CSI Driver SPIFFE only
