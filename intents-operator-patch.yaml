@@ -1,11 +1,22 @@
 spec:
   template:
     spec:
+      runAsNonRoot: false
       containers:
       - name: manager
+        imagePullPolicy: Always
         volumeMounts:
-        - mountPath: "/root/.aws"
+        - mountPath: "/aws-config"
           name: spiffe
+        env:
+        - name: OTTERIZE_TRUST_ANCHOR_ARN
+          value: arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/539adc52-d077-41e7-b73b-1b21254b8f48
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/aws-config/credentials"
+        - name: AWS_REGION
+          value: "eu-west-2"
+        securityContext:
+          runAsNonRoot: false
       volumes:
       - name: spiffe
         csi:
