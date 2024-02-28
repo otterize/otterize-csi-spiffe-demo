@@ -57,6 +57,9 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
     ```bash
     helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system --create-namespace \
         --set intentsOperator.operator.mode=defaultActive  \
+        --set intentsOperator.operator.repository=public.ecr.aws/e3b4k2v5 \
+        --set intentsOperator.operator.image=ekstutorial  \
+        --set intentsOperator.operator.tag=intents-operator-rolesanywhere \
         --set credentialsOperator.operator.repository=public.ecr.aws/e3b4k2v5 \
         --set credentialsOperator.operator.image=ekstutorial  \
         --set credentialsOperator.operator.tag=creds-operator-rolesanywhere \
