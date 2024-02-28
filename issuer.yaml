@@ -15,7 +15,7 @@ spec:
   isCA: true
   duration: 87660h # 10 years
   secretName: cert-manager-spiffe
-  commonName: cert-manager-spiffe.mattiasgees.be
+  commonName: spiffe.cert-manager.io
   subject:
     organizations:
     - mattiasgees
