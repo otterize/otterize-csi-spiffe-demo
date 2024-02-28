@@ -31,7 +31,7 @@ variable "otterize-intents-operator-profile-name" {
 }
 
 variable "trust-domain" {
-  default = "cert-manager-spiffe.mattiasgees.be"
+  default = "spiffe.cert-manager.io"
 }
 
 variable "otterize-namespace" {

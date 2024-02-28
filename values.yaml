@@ -1,5 +1,5 @@
 app:
-  trustDomain: cert-manager-spiffe.mattiasgees.be
+  trustDomain: spiffe.cert-manager.io
   issuer:
     name: cert-manager-spiffe
   approver:

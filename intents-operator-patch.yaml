@@ -1,7 +1,8 @@
 spec:
   template:
     spec:
-      runAsNonRoot: false
+      securityContext:
+        runAsNonRoot: false
       containers:
       - name: manager
         imagePullPolicy: Always
@@ -10,7 +11,7 @@ spec:
           name: spiffe
         env:
         - name: OTTERIZE_TRUST_ANCHOR_ARN
-          value: arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/539adc52-d077-41e7-b73b-1b21254b8f48
+          value: arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/1d88908e-0453-491a-84d0-aed2038a3916
         - name: AWS_SHARED_CREDENTIALS_FILE
           value: "/aws-config/credentials"
         - name: AWS_REGION
@@ -23,7 +24,7 @@ spec:
           driver: spiffe.csi.cert-manager.io
           readOnly: true
           volumeAttributes:
-            aws.spiffe.csi.cert-manager.io/trust-profile: "arn:aws:rolesanywhere:eu-west-2:228615251467:profile/4561d1dc-5326-4eb8-918b-8173a88ceb61"
-            aws.spiffe.csi.cert-manager.io/trust-anchor: "arn:aws:rolesanywhere:eu-west-2:228615251467:trust-anchor/539adc52-d077-41e7-b73b-1b21254b8f48"
-            aws.spiffe.csi.cert-manager.io/role: "arn:aws:iam::228615251467:role/otterize-intents-operator"
+            aws.spiffe.csi.cert-manager.io/trust-profile: "<otterize-intents-operator-trust-profile-arn from Terraform output>"
+            aws.spiffe.csi.cert-manager.io/trust-anchor: "<trust-anchor-arn from Terraform output>"
+            aws.spiffe.csi.cert-manager.io/role: "<otterize-intents-operator-role-arn from Terraform output>"
             aws.spiffe.csi.cert-manager.io/enable: "true"
