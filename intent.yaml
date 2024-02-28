@@ -2,6 +2,7 @@ apiVersion: k8s.otterize.com/v1alpha3
 kind: ClientIntents
 metadata:
   name: server
+  namespace: otterize-tutorial-iam
 spec:
   service:
     name: server

@@ -84,6 +84,7 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 
     * Add the cert-manager CSI Driver SPIFFE to both the credentials and intents controller
     * Set the necessary references to the AWS IAM roles & AWS IAM Anywhere Trust Anchor & profiles
+    * Add an environment variable to the credential-operator to become aware of the SPIFFE trust domain
 
     ```bash
     kubectl patch deployment credentials-operator-controller-manager -n otterize-system --patch-file credentials-operator-patch.yaml
