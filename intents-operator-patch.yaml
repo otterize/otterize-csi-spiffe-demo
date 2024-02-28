@@ -1,7 +1,8 @@
 spec:
   template:
     spec:
-      runAsNonRoot: false
+      securityContext:
+        runAsNonRoot: false
       containers:
       - name: manager
         imagePullPolicy: Always
