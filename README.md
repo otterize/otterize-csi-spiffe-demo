@@ -98,16 +98,17 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
     kubectl patch deployment -n otterize-tutorial-iam server --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/template/spec/containers/0/env\", \"value\": [{\"name\": \"BUCKET_NAME\", \"value\": \"$BUCKET_NAME\"}]}]"
     ```
 
-1. Watch logs of the server and look at credentials errors.
+1. Watch logs of the server and look at credentials errors. The errors are normal as we haven't let Otterize know it needs to manage access for this workload to AWS.
 
     ```bash
     kubectl logs -f -n otterize-tutorial-iam deploy/server
     ```
 
-1. Add the label to let Otterize create the role
+1. Add the label to let Otterize create the IAM role and create an Otterize ClientIntent. **Make sure to change to the correct S3 Bucket Name in the ClientIntent.**
 
     ```bash
     kubectl patch deployment -n otterize-tutorial-iam server -p '{"spec": {"template":{"metadata":{"labels":{"credentials-operator.otterize.com/create-aws-role":"true"}}}} }'
+    kubectl apply -f intent.yaml
     ```
 
 ## Setup instructions for cert-manager CSI Driver SPIFFE only
