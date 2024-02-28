@@ -112,8 +112,14 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 
     ```bash
     kubectl apply -f rbac-server.yaml
-    kubectl patch deployment -n otterize-tutorial-iam server -p '{"spec": {"template":{"metadata":{"labels":{"credentials-operator.otterize.com/create-aws-role":"true"}}}} }'
+    kubectl patch deployment server -n otterize-tutorial-iam --patch-file server-patch.yaml
     kubectl apply -f intent.yaml
+    ```
+
+1. Check the logs again of the server and notice how the upload is succeeding
+
+    ```bash
+    kubectl logs -f -n otterize-tutorial-iam deploy/server
     ```
 
 ## Setup instructions for cert-manager CSI Driver SPIFFE only

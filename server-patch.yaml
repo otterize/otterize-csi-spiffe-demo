@@ -1,0 +1,11 @@
+spec:
+  template:
+    metadata:
+      labels:
+        credentials-operator.otterize.com/create-aws-role:  "true"
+    spec:
+      containers:
+      - name: server
+        env:
+        - name: AWS_REGION
+          value: "eu-west-2"
