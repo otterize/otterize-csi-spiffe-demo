@@ -1,0 +1,10 @@
+intentsOperator:
+  operator:  
+    repository: public.ecr.aws/e3b4k2v5
+    image: ekstutorial
+    tag: intents-operator-rolesanywhere
+credentialsOperator:
+  operator:  
+    repository: public.ecr.aws/e3b4k2v5
+    image: ekstutorial
+    tag: creds-operator-rolesanywhere

@@ -55,17 +55,17 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 1. Setup Otterize with AWS Integration
 
     ```bash
-    helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system --create-namespace \
+    helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system -f values-otterize.yaml --create-namespace \
         --set intentsOperator.operator.mode=defaultActive  \
-        --set intentsOperator.operator.repository=public.ecr.aws/e3b4k2v5 \
-        --set intentsOperator.operator.image=ekstutorial  \
-        --set intentsOperator.operator.tag=intents-operator-rolesanywhere \
-        --set credentialsOperator.operator.repository=public.ecr.aws/e3b4k2v5 \
-        --set credentialsOperator.operator.image=ekstutorial  \
-        --set credentialsOperator.operator.tag=creds-operator-rolesanywhere \
         --set global.aws.enabled=true \
+        --set global.aws.region=eu-west-2 \
         --set intentsOperator.aws.roleARN=<otterize-intents-operator-role-arn from Terraform output> \
-        --set credentialsOperator.aws.roleARN=<otterize-credentials-operator-role-arn from Terraform output>
+        --set credentialsOperator.aws.roleARN=<otterize-credentials-operator-role-arn from Terraform output> \
+        --set global.aws.rolesAnywhere.enabled=true \
+        --set global.aws.rolesAnywhere.trustDomain=<trust domain> \
+        --set global.aws.rolesAnywhere.trustAnchorARN=<arn> \
+        --set global.aws.rolesAnywhere.intentsOperatorTrustProfileARN=<arn> \
+        --set global.aws.rolesAnywhere.credentialsOperatorTrustProfileARN=<arn>
     ```
 
 1. Run these commands to update resources necessary for the Otterize operator to function, this will be moved to the Helm chart soon.
