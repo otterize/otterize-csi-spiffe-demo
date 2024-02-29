@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: certificaterequest-creator
-  namespace: otterize-system
+  namespace: otterize-tutorial-iam
 rules:
 - apiGroups: ["cert-manager.io"]
   resources: ["certificaterequests"]
@@ -11,27 +11,13 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: credentials-operator-certificaterequest
-  namespace: otterize-system
+  name: server-certificaterequest
+  namespace: otterize-tutorial-iam
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: certificaterequest-creator
 subjects:
 - kind: ServiceAccount
-  name: credentials-operator-controller-manager
-  namespace: otterize-system
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: intents-operator-certificaterequest
-  namespace: otterize-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: certificaterequest-creator
-subjects:
-- kind: ServiceAccount
-  name: intents-operator-controller-manager
-  namespace: otterize-system
+  name: server
+  namespace: otterize-tutorial-iam

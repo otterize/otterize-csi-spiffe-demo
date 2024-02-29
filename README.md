@@ -34,7 +34,7 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 1. Install the cert-manager CSI Driver SPIFFE. This uses the modified version of cert-manager CSI Driver SPIFFE that automatically authenticates to AWS.
 
     ```bash
-    helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-manager-csi-driver-spiffe -f values.yaml --wait
+    helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-manager-csi-driver-spiffe -f values.yaml
     ```
 
 1. We need to prepare a few bits directly on the AWS side to allow Otterize to connect from our Kubernetes cluster to AWS. The Terraform will setup the following:
@@ -55,7 +55,7 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 1. Setup Otterize with AWS Integration
 
     ```bash
-    helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system -f values-otterize.yaml --create-namespace \
+    helm upgrade --install otterize ./helm-charts/otterize-kubernetes -n otterize-system -f values-otterize.yaml --create-namespace \
         --set intentsOperator.operator.mode=defaultActive  \
         --set global.aws.enabled=true \
         --set global.aws.region=eu-west-2 \
@@ -66,29 +66,6 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
         --set global.aws.rolesAnywhere.trustAnchorARN=<arn> \
         --set global.aws.rolesAnywhere.intentsOperatorTrustProfileARN=<arn> \
         --set global.aws.rolesAnywhere.credentialsOperatorTrustProfileARN=<arn>
-    ```
-
-1. Run these commands to update resources necessary for the Otterize operator to function, this will be moved to the Helm chart soon.
-
-    ```bash
-    kubectl label mutatingwebhookconfiguration/otterize-credentials-operator-mutating-webhook-configuration app.kubernetes.io/component=credentials-operator app.kubernetes.io/part-of=otterize
-    ```
-
-1. Give Otterize Kubernetes Service Accounts (intents and credentials operators) the permission to create cert-manager certificaterequests. This is required as the cert-manager CSI SPIFFE Driver impersonates the Kubernetes Service Account through the [CSI Token Request](https://kubernetes-csi.github.io/docs/token-requests.html)
-
-    ```bash
-    kubectl apply -f rbac.yaml
-    ```
-
-1. To make Otterize work with the cert-manager CSI driver, we need to patch both the intents and credentials controllers of Otterize. **Make sure to add the correct values you got from your Terraform outputs into this patch file.**. This patch will do the following:
-
-    * Add the cert-manager CSI Driver SPIFFE to both the credentials and intents controller
-    * Set the necessary references to the AWS IAM roles & AWS IAM Anywhere Trust Anchor & profiles
-    * Add an environment variable to the credential-operator to become aware of the SPIFFE trust domain
-
-    ```bash
-    kubectl patch deployment credentials-operator-controller-manager -n otterize-system --patch-file credentials-operator-patch.yaml
-    kubectl patch deployment intents-operator-controller-manager -n otterize-system --patch-file intents-operator-patch.yaml
     ```
 
 1. Create S3 bucket and deploy demo application
@@ -108,15 +85,22 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
     kubectl logs -f -n otterize-tutorial-iam deploy/server
     ```
 
-1. Allow the server deployment to create `CertificateRequests` to get a SPIFFE ID. Besides that add the label to let Otterize create the IAM role and create an Otterize ClientIntent. **Make sure to change to the correct S3 Bucket Name in the ClientIntent.**
+1. Allow the server deployment to create `CertificateRequests` to get a SPIFFE ID. Besides that add the label to let Otterize create the IAM role.
 
     ```bash
-    kubectl apply -f rbac-server.yaml
+    kubectl apply -f rbac.yaml
     kubectl patch deployment server -n otterize-tutorial-iam --patch-file server-patch.yaml
+    ```
+
+1. Go to AWS IAM console and look for a IAM role that starts with `otr` and the server pod will have the CSI SPIFFE Driver volume attached to it. You can see that by doing a `kubectl describe` on the pod.
+
+1. Create an Otterize ClientIntent. **Make sure to change to the correct S3 Bucket Name in the ClientIntent.**
+
+    ```bash
     kubectl apply -f intent.yaml
     ```
 
-1. Check the logs again of the server and notice how the upload is succeeding
+1. Check the logs again of the server and notice how the upload is succeeding. You can also validate the policy by going back to the IAM role in the AWS console.
 
     ```bash
     kubectl logs -f -n otterize-tutorial-iam deploy/server
