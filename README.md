@@ -2,7 +2,7 @@
 
 This is a demo repository that builds upon the Kubecon EU 2023 [talk](https://kccnceu2023.sched.com/event/1HyVN/cert-manager-can-do-spiffe-solving-multi-cloud-workload-identity-using-a-de-facto-standard-tool-thomas-meadows-jetstack-joshua-van-leeuwen-diagrid) of [Josh van Leeuwen](https://github.com/JoshVanL) and [Thomas Meadows](https://github.com/ChaosInTheCRD) where they presented how you could leverage cert-manager with its CSI Driver SPIFFE to authenticate to AWS by using IAM Roles Anywhere. The prior work they did for the talk can be found in the following [GitHub repository](https://github.com/JoshVanL/kubecon-2023-spiffe).
 
-This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manager.io/docs/usage/csi-driver-spiffe/) in a non-AWS Kubernetes cluster. [Otterize](https://docs.otterize.com/overview/installation) will be setup in the same Kubernetes cluster and will use the cert-manager CSI Driver SPIFFE to authenticate to AWS and [automate](https://docs.otterize.com/features/aws-iam/tutorials/aws-iam-eks) creation of AWS roles and policies of different workloads running in that non-AWS Kubernetes clysters.
+This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manager.io/docs/usage/csi-driver-spiffe/) in a non-AWS Kubernetes cluster. [Otterize](https://docs.otterize.com/overview/installation) will be setup in the same Kubernetes cluster and will use the cert-manager CSI Driver SPIFFE to authenticate to AWS and [automate](https://docs.otterize.com/features/aws-iam/tutorials/aws-iam-eks) creation of AWS roles and policies of different workloads running in that non-AWS Kubernetes clusters.
 
 ## Prerequisites
 
