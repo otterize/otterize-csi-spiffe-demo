@@ -31,7 +31,7 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
       $(kubectl get cr -n cert-manager -ojsonpath='{.items[0].metadata.name}')
     ```
 
-1. Install the cert-manager CSI Driver SPIFFE. This uses the modified version of cert-manager CSI Driver SPIFFE that automatically authenticates to AWS.
+1. Install the cert-manager CSI Driver SPIFFE. This uses the modified version of cert-manager CSI Driver SPIFFE that automatically authenticates to AWS. These changes will make their way to mainline soon.
 
     ```bash
     helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-manager-csi-driver-spiffe -f values.yaml
@@ -53,6 +53,7 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 1. Capture the Terraform Outputs for later use
 
 1. Setup Otterize with AWS Integration
+   This uses the modified version of Otterize that supports AWS IAM RolesAnywhere. Like the modified version of the csi-driver-spiffe, this will make its way to mainline soon.
 
     ```bash
     helm repo add otterize https://helm.otterize.com --force-update
