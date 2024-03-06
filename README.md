@@ -55,7 +55,9 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 1. Setup Otterize with AWS Integration
 
     ```bash
-    helm upgrade --install otterize ./helm-charts/otterize-kubernetes -n otterize-system -f values-otterize.yaml --create-namespace \
+    helm repo add otterize https://helm.otterize.com --force-update
+    
+    helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system -f values-otterize.yaml --create-namespace \
         --set intentsOperator.operator.mode=defaultActive  \
         --set global.aws.enabled=true \
         --set global.aws.region=eu-west-2 \
