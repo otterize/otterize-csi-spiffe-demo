@@ -2,9 +2,9 @@ intentsOperator:
   operator:  
     repository: public.ecr.aws/e3b4k2v5
     image: ekstutorial
-    tag: intents-operator-rolesanywhere
+    tag: intents-operator-rolesanywhere-test
 credentialsOperator:
   operator:  
     repository: public.ecr.aws/e3b4k2v5
     image: ekstutorial
-    tag: creds-operator-rolesanywhere
+    tag: creds-operator-rolesanywhere-test
