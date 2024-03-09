@@ -7,7 +7,7 @@ spec:
   service:
     name: server
   calls:
-    - name: arn:aws:s3:::otterize-tutorial-bucket-*/*
+    - name: arn:aws:s3:::otterize-tutorial-bucket-*/* # or any other bucket name
       type: aws
       awsActions:
         - "s3:PutObject"
