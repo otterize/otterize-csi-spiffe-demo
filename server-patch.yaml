@@ -8,4 +8,4 @@ spec:
       - name: server
         env:
         - name: AWS_REGION
-          value: "eu-west-2"
+          value: "us-west-2"
