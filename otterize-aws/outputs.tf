@@ -1,19 +1,19 @@
 output "otterize-credentials-operator-trust-profile-arn" {
-  value = aws_rolesanywhere_profile.otterize-credentials-operator.arn
+  value = module.otterize-aws-iam.otterize-credentials-operator-trust-profile-arn
 }
 
 output "otterize-intents-operator-trust-profile-arn" {
-  value = aws_rolesanywhere_profile.otterize-intents-operator.arn
+  value = module.otterize-aws-iam.otterize-intents-operator-trust-profile-arn
 }
 
 output "trust-anchor-arn" {
-  value = aws_rolesanywhere_trust_anchor.otterize-cert-manager-spiffe-ca.arn
+  value = module.otterize-aws-iam.trust-anchor-arn
 }
 
 output "otterize-credentials-operator-role-arn" {
-  value = aws_iam_role.otterize-credentials-operator.arn
+  value = module.otterize-aws-iam.otterize-credentials-operator-role-arn
 }
 
 output "otterize-intents-operator-role-arn" {
-  value = aws_iam_role.otterize-intents-operator.arn
+  value = module.otterize-aws-iam.otterize-intents-operator-role-arn
 }

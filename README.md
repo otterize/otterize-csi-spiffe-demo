@@ -53,19 +53,20 @@ This demo will setup cert-manager and its [CSI Driver SPIFFE](https://cert-manag
 1. Capture the Terraform Outputs for later use
 
 1. Setup Otterize with AWS Integration
-   This uses the modified version of Otterize that supports AWS IAM RolesAnywhere. Like the modified version of the csi-driver-spiffe, this will make its way to mainline soon.
+   This uses the modified version of Otterize that supports AWS IAM RolesAnywhere.
 
     ```bash
     helm repo add otterize https://helm.otterize.com --force-update
     
-    helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system -f values-otterize.yaml --create-namespace \
+    helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system --create-namespace \
         --set intentsOperator.operator.mode=defaultActive  \
         --set global.aws.enabled=true \
         --set global.aws.region=eu-west-2 \
         --set intentsOperator.aws.roleARN=<otterize-intents-operator-role-arn from Terraform output> \
         --set credentialsOperator.aws.roleARN=<otterize-credentials-operator-role-arn from Terraform output> \
         --set global.aws.rolesAnywhere.enabled=true \
-        --set global.aws.rolesAnywhere.trustDomain=<trust domain> \
+        --set global.aws.rolesAnywhere.trustDomain=spiffe.cert-manager.io \
+        --set global.aws.rolesAnywhere.clusterName=otterize-csi-spiffe-demo \
         --set global.aws.rolesAnywhere.trustAnchorARN=<arn> \
         --set global.aws.rolesAnywhere.intentsOperatorTrustProfileARN=<arn> \
         --set global.aws.rolesAnywhere.credentialsOperatorTrustProfileARN=<arn>
