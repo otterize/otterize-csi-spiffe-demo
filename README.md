@@ -61,17 +61,18 @@ This is a demo repository that builds upon the Kubecon EU 2023 [talk](https://kc
     helm repo add otterize https://helm.otterize.com --force-update
     
     helm upgrade --install otterize otterize/otterize-kubernetes -n otterize-system --create-namespace \
-        --set intentsOperator.operator.mode=defaultActive  \
-        --set global.aws.enabled=true \
-        --set global.aws.region=eu-west-2 \
-        --set intentsOperator.aws.roleARN=<otterize-intents-operator-role-arn from Terraform output> \
-        --set credentialsOperator.aws.roleARN=<otterize-credentials-operator-role-arn from Terraform output> \
-        --set global.aws.rolesAnywhere.enabled=true \
-        --set global.aws.rolesAnywhere.trustDomain=spiffe.cert-manager.io \
-        --set global.aws.rolesAnywhere.clusterName=otterize-csi-spiffe-demo \
-        --set global.aws.rolesAnywhere.trustAnchorARN=<arn> \
-        --set global.aws.rolesAnywhere.intentsOperatorTrustProfileARN=<arn> \
-        --set global.aws.rolesAnywhere.credentialsOperatorTrustProfileARN=<arn>
+      --set intentsOperator.operator.mode=defaultActive  \
+      --set global.aws.enabled=true \
+      --set global.aws.region=eu-west-2 \
+      --set global.aws.rolesAnywhere.enabled=true \
+      --set global.aws.rolesAnywhere.clusterName=otterize-csi-spiffe-demo \
+      --set 'global.aws.rolesAnywhere.accounts[0].trustDomain=spiffe.cert-manager.io' \
+      --set 'global.aws.rolesAnywhere.accounts[0].trustAnchorARN=<arn>' \
+      --set 'global.aws.rolesAnywhere.accounts[0].id=353146681200' \
+      --set 'global.aws.rolesAnywhere.accounts[0].intentsOperator.profileARN=<arn from terraform output>' \
+      --set 'global.aws.rolesAnywhere.accounts[0].credentialsOperator.profileARN=<arn>' \
+      --set 'global.aws.rolesAnywhere.accounts[0].intentsOperator.roleARN=<arn>' \
+      --set 'global.aws.rolesAnywhere.accounts[0].credentialsOperator.roleARN=<arn>'
     ```
 
 1. Create S3 bucket and deploy demo application
