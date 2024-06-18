@@ -36,7 +36,7 @@ This is a demo repository that builds upon the Kubecon EU 2023 [talk](https://kc
 1. Install the cert-manager CSI Driver SPIFFE. This uses the modified version of cert-manager CSI Driver SPIFFE that automatically authenticates to AWS. These changes will make their way to mainline soon.
 
     ```bash
-    helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-manager-csi-driver-spiffe -f values.yaml
+    helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-manager-csi-driver-spiffe --version v0.5.0 -f values.yaml
     ```
 
 1. We need to prepare a few bits directly on the AWS side to allow Otterize to connect from our Kubernetes cluster to AWS. The Terraform will setup the following:
